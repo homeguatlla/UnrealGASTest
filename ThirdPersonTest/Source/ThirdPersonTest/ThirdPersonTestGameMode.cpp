@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "ThirdPersonTestGameMode.h"
+
+#include "MyPlayerState.h"
 #include "ThirdPersonTestCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
@@ -31,16 +33,23 @@ void AThirdPersonTestGameMode::PostLogin(APlayerController* NewPlayer)
 AThirdPersonTestGameMode::AThirdPersonTestGameMode()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_ThirdPersonCharacter"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 
 	// set default playerController class to our Blueprinted playerController
-	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/MyPlayerController"));
+	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_MyPlayerController"));
 	if (PlayerControllerBPClass.Class != NULL)
 	{
 		PlayerControllerClass = PlayerControllerBPClass.Class;
+	}
+
+	// set default playerController class to our Blueprinted playerstate
+	static ConstructorHelpers::FClassFinder<APlayerState> PlayerStateBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_MyPlayerState"));
+	if (PlayerStateBPClass.Class != NULL)
+	{
+		PlayerStateClass = PlayerStateBPClass.Class;
 	}
 }

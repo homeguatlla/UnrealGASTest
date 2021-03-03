@@ -3,17 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+
+#include "AbilitySystemInterface.h"
+#include "Builders/AbilitySystemComponentBuilder.h"
 #include "GameFramework/Character.h"
 #include "ThirdPersonTestCharacter.generated.h"
 
 UCLASS(config=Game)
-class AThirdPersonTestCharacter : public ACharacter
+class AThirdPersonTestCharacter : public ACharacter, public IAbilitySystemInterface
 {
 public:
 	void BeginPlay() override;
 	void PossessedBy(AController* NewController) override;
 	void UnPossessed() override;
-
+	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
 private:
 	GENERATED_BODY()
 
@@ -24,6 +29,9 @@ private:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	AbilitySystemComponentBuilder mAbilitySystemComponentBuilder;
+
 public:
 	AThirdPersonTestCharacter();
 
@@ -36,9 +44,6 @@ public:
 	float BaseLookUpRate;
 
 protected:
-
-	/** Resets HMD orientation in VR. */
-	void OnResetVR();
 
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
@@ -66,7 +71,7 @@ protected:
 
 protected:
 	// APawn interface
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
 public:
