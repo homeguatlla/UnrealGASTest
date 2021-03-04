@@ -9,7 +9,6 @@ public:
 	AbilitySystemComponentBuilder();
 	~AbilitySystemComponentBuilder() = default;
 	
-	AbilitySystemComponentBuilder& WithAbilitySystemComponent(UAbilitySystemComponent* AbilitySystemComponent);
 	AbilitySystemComponentBuilder& WithInputComponent(UInputComponent* PlayerInputComponent);
 	AbilitySystemComponentBuilder& WithPlayerState(AMyPlayerState* PlayerState);
 	AbilitySystemComponentBuilder& WithCharacter(ACharacter* Character);
@@ -17,7 +16,6 @@ public:
 	void Build();
 
 private:
-	UAbilitySystemComponent* mAbilitySystemComponent;
 	UInputComponent* mPlayerInputComponent;
 	AMyPlayerState* mPlayerState;
 	ACharacter* mCharacter;

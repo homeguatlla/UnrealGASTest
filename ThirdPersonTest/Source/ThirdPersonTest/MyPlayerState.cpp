@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 #include "MyPlayerState.h"
 #include "AbilitySystemComponent.h"
+#include "GameFramework/Character.h"
 #include "GAS/AbilityInputDefinition.h"
 #include "GAS/Attributes/AttributeSetHealth.h"
 
@@ -20,14 +21,28 @@ AMyPlayerState::AMyPlayerState()
 	NetUpdateFrequency = 100.0f;
 
 	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerState::AMyPlayerState %s"), *GetName());
-
-	RegisterAttributesDelegates();
 }
 
 void AMyPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerState::BeginPlay %s"), *GetName());
+}
+
+void AMyPlayerState::InitializeAbilitySystemComponent(UInputComponent* inputComponent, ACharacter* character)
+{
+	mAbilitySystemComponent->InitAbilityActorInfo(this, character);		
+	mAbilitySystemComponent->BindAbilityActivationToInputComponent(
+	inputComponent,
+	FGameplayAbilityInputBinds(
+	    FString("Confirm"),
+	    FString("Cancel"),
+	    FString("EAbilityInputID"),
+	    static_cast<int32>(EAbilityInputID::Confirm),
+	    static_cast<int32>(EAbilityInputID::Cancel)
+	));
+	RegisterAbilities();
+	RegisterAttributesDelegates();
 }
 
 void AMyPlayerState::RegisterAttributesDelegates()

@@ -8,7 +8,6 @@
 #include "ThirdPersonTest/GAS/AbilityInputDefinition.h"
 
 AbilitySystemComponentBuilder::AbilitySystemComponentBuilder() :
-mAbilitySystemComponent{nullptr},
 mPlayerInputComponent{nullptr},
 mPlayerState{nullptr},
 mCharacter{nullptr},
@@ -16,18 +15,9 @@ mIsInitialized{false}
 {
 }
 
-AbilitySystemComponentBuilder& AbilitySystemComponentBuilder::WithAbilitySystemComponent(
-	UAbilitySystemComponent* AbilitySystemComponent)
-{
-	mAbilitySystemComponent = AbilitySystemComponent;
-	
-	return *this;
-}
-
 AbilitySystemComponentBuilder& AbilitySystemComponentBuilder::WithInputComponent(UInputComponent* PlayerInputComponent)
 {
 	mPlayerInputComponent = PlayerInputComponent;
-
 	return *this;
 }
 
@@ -45,20 +35,9 @@ AbilitySystemComponentBuilder& AbilitySystemComponentBuilder::WithCharacter(ACha
 
 void AbilitySystemComponentBuilder::Build()
 {
-	if(!mIsInitialized && mAbilitySystemComponent && mPlayerInputComponent && mPlayerState && mCharacter)
+	if(!mIsInitialized && mPlayerInputComponent && mPlayerState && mCharacter)
 	{
-		mAbilitySystemComponent->BindAbilityActivationToInputComponent(
-        mPlayerInputComponent,
-        FGameplayAbilityInputBinds(
-            FString("ConfirmTarget"),
-            FString("CancelTarget"),
-            FString("EAbilityInputID"),
-            static_cast<int32>(EAbilityInputID::Confirm),
-            static_cast<int32>(EAbilityInputID::Cancel)
-		));
-		mAbilitySystemComponent->InitAbilityActorInfo(mPlayerState, mCharacter);
-		mPlayerState->RegisterAbilities();
-		
+		mPlayerState->InitializeAbilitySystemComponent(mPlayerInputComponent, mCharacter);
 		mIsInitialized = true;
 		UE_LOG(LogTemp, Warning, TEXT("AbilitySystemComponentBuilder::Build Built!"));
 	}

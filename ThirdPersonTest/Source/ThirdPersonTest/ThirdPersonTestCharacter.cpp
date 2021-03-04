@@ -150,9 +150,8 @@ void AThirdPersonTestCharacter::SetupPlayerInputComponent(class UInputComponent*
 	UE_LOG(LogTemp, Warning, TEXT("AThirdPersonTestCharacter::SetupPlayerInputComponent %s"), *GetName());
 
 	const auto playerState = Cast<AMyPlayerState>(GetPlayerState());
-	const auto abilitySystemComponent = playerState ? playerState->GetAbilitySystemComponent() : nullptr;
+	mAbilitySystemComponent = playerState ? playerState->GetAbilitySystemComponent() : nullptr;
 	mAbilitySystemComponentBuilder.WithInputComponent(PlayerInputComponent)
-								  .WithAbilitySystemComponent(abilitySystemComponent)
 								  .WithPlayerState(playerState)
 								  .WithCharacter(this)
 								  .Build();
