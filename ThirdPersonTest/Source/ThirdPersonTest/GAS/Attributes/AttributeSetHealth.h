@@ -22,8 +22,11 @@ public:
 private:
 	UFUNCTION()
     void OnRep_Health(const FGameplayAttributeData& oldHealth) const;
+	
 	void PreAttributeChange(const FGameplayAttribute& attribute, float& newValue) override;
 	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:	
 	UPROPERTY(BlueprintReadOnly, Category = "Health", ReplicatedUsing = OnRep_Health)

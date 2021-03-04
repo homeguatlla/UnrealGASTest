@@ -17,8 +17,11 @@ public:
 	void BeginPlay() override;
 	void PossessedBy(AController* NewController) override;
 	void UnPossessed() override;
-	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	FORCEINLINE class UAbilitySystemComponent* GetAbilitySystemComponent() const override { return mAbilitySystemComponent; }
+
 private:
 	GENERATED_BODY()
 
@@ -30,6 +33,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+	/** Ability System Component*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AbilitySystemComponent, meta = (AllowPrivateAccess = "true"))
+	class UAbilitySystemComponent* mAbilitySystemComponent;
+	
 	AbilitySystemComponentBuilder mAbilitySystemComponentBuilder;
 
 public:
@@ -73,11 +80,5 @@ protected:
 	// APawn interface
 	void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
-
-public:
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	/** Returns FollowCamera subobject **/
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 };
 

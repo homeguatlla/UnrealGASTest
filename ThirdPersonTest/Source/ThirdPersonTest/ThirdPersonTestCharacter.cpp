@@ -113,11 +113,6 @@ void AThirdPersonTestCharacter::UnPossessed()
 	UE_LOG(LogTemp, Warning, TEXT("Role: %s Remote Role: %s"), *TransformRoleToFString(GetLocalRole()), *TransformRoleToFString(GetRemoteRole()));
 }
 
-UAbilitySystemComponent* AThirdPersonTestCharacter::GetAbilitySystemComponent() const
-{
-	return nullptr;
-}
-
 //////////////////////////////////////////////////////////////////////////
 // Input
 

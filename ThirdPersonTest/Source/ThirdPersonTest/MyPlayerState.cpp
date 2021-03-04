@@ -9,6 +9,7 @@ AMyPlayerState::AMyPlayerState()
 	// Create ability system component, and set it to be explicitly replicated
 	mAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	mAbilitySystemComponent->SetIsReplicated(true);
+	mAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 
 	auto attributeSetHealth = CreateDefaultSubobject<UAttributeSetHealth>(TEXT("AttributeSetHealth"));
 	attributeSetHealth->Initialize(100.0f);
@@ -25,6 +26,7 @@ AMyPlayerState::AMyPlayerState()
 
 void AMyPlayerState::BeginPlay()
 {
+	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerState::BeginPlay %s"), *GetName());
 }
 
@@ -38,18 +40,19 @@ void AMyPlayerState::RegisterAttributesDelegates()
 
 void AMyPlayerState::RegisterAbilities()
 {
-	if(GetLocalRole() != ROLE_Authority || !mAbilitySystemComponent->IsValidLowLevel())
+	if(HasAuthority() || mAbilitySystemComponent)
 	{
 		return;
 	}
-	
+
+	//TODO ability should inherid from an interface where to get the InputID instead of hardcoded here as Heal
 	for (TSubclassOf<UGameplayAbility>& ability : mCharacterAbilities)
 	{
 		mAbilitySystemComponent->GiveAbility(
             FGameplayAbilitySpec(
             	ability,
-            	0,
-            	static_cast<int32>(EAbilityInputID::Jump),
+            	1,
+            	static_cast<int32>(EAbilityInputID::Heal),
             	this
             )
         );
