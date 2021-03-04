@@ -55,7 +55,7 @@ void AMyPlayerState::RegisterAttributesDelegates()
 
 void AMyPlayerState::RegisterAbilities()
 {
-	if(HasAuthority() || mAbilitySystemComponent)
+	if(!HasAuthority() || !mAbilitySystemComponent)
 	{
 		return;
 	}
@@ -72,6 +72,8 @@ void AMyPlayerState::RegisterAbilities()
             )
         );
 	}
+	const auto activableActivities = mAbilitySystemComponent->GetActivatableAbilities();
+	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerState::RegisterAbilities %d activities"), activableActivities.Num());
 }
 
 void AMyPlayerState::OnHealthChanged(const FOnAttributeChangeData& Data)
