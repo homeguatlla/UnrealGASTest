@@ -17,7 +17,8 @@ public:
 	void BeginPlay() override;
 	void PossessedBy(AController* NewController) override;
 	void UnPossessed() override;
-
+	void OnRep_PlayerState() override;
+	
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE class UAbilitySystemComponent* GetAbilitySystemComponent() const override { return mAbilitySystemComponent; }

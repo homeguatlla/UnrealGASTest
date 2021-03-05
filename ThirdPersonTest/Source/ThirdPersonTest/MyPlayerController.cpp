@@ -77,3 +77,18 @@ void AMyPlayerController::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::BeginPlay %s"), *GetName());
 	UE_LOG(LogTemp, Warning, TEXT("Role: %s Remote Role: %s"), *TransformRoleToFString(GetLocalRole()), *TransformRoleToFString(GetRemoteRole()));
 }
+
+void AMyPlayerController::ProcessPlayerInput(const float DeltaTime, const bool bGamePaused)
+{
+	Super::ProcessPlayerInput(DeltaTime, bGamePaused);
+
+	if(GetWorld()->IsServer())
+	{
+		UE_LOG(LogTemp, Error, TEXT("SERVER:"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CLIENT:"));
+	}
+	UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController::ProcessPlayerInput %s"), *GetName());
+}

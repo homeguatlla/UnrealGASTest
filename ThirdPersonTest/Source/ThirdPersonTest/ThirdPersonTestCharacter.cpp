@@ -81,6 +81,7 @@ void AThirdPersonTestCharacter::BeginPlay()
 
 void AThirdPersonTestCharacter::PossessedBy(AController* NewController)
 {
+	//Server only
 	Super::PossessedBy(NewController);
 	if(GetWorld()->IsServer())
 	{
@@ -92,6 +93,11 @@ void AThirdPersonTestCharacter::PossessedBy(AController* NewController)
 	}
 	UE_LOG(LogTemp, Warning, TEXT("AThirdPersonTestCharacter::PossessedBy character: %s possessed by player controller: %s"), *GetName(), *NewController->GetName());
 	UE_LOG(LogTemp, Warning, TEXT("Role: %s Remote Role: %s"), *TransformRoleToFString(GetLocalRole()), *TransformRoleToFString(GetRemoteRole()));
+
+	if(GetAbilitySystemComponent())
+	{
+		GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	}
 }
 
 void AThirdPersonTestCharacter::UnPossessed()
@@ -111,6 +117,27 @@ void AThirdPersonTestCharacter::UnPossessed()
 	
 	UE_LOG(LogTemp, Warning, TEXT("AThirdPersonTestCharacter::UnPossessed %s"), *GetName());
 	UE_LOG(LogTemp, Warning, TEXT("Role: %s Remote Role: %s"), *TransformRoleToFString(GetLocalRole()), *TransformRoleToFString(GetRemoteRole()));
+}
+
+void AThirdPersonTestCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	//Client  only
+	if(GetWorld()->IsServer())
+	{
+		UE_LOG(LogTemp, Error, TEXT("SERVER:"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CLIENT:"));
+	}
+	UE_LOG(LogTemp, Warning, TEXT("AThirdPersonTestCharacter::OnRep_PlayerState character: %s"), *GetName());
+	UE_LOG(LogTemp, Warning, TEXT("Role: %s Remote Role: %s"), *TransformRoleToFString(GetLocalRole()), *TransformRoleToFString(GetRemoteRole()));
+
+	if(GetAbilitySystemComponent())
+	{
+		GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

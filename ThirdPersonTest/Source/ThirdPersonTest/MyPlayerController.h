@@ -16,10 +16,12 @@ public:
 	AMyPlayerController();
 	void AcknowledgePossession(APawn* P) override;
 	
+	
 protected:
 	void OnPossess(APawn* aPawn) override;
 	void OnUnPossess() override;
 	void BeginPlay() override;
+	void ProcessPlayerInput(const float DeltaTime, const bool bGamePaused) override;
 	
 private:
 	GENERATED_BODY()
